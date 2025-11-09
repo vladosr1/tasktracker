@@ -1,0 +1,11 @@
+{% extends "tasks/base.html" %}
+{% block title %}Форма завдання{% endblock %}
+{% block content %}
+<h3 class="mb-3">{% if object %}Редагувати{% else %}Нове{% endif %} завдання</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Зберегти</button>
+  <a href="{% url 'task_list' %}" class="btn btn-secondary">Скасувати</a>
+</form>
+{% endblock %}

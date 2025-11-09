@@ -1,0 +1,31 @@
+{% extends "tasks/base.html" %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block content %}
+<h3>{{ object.title }}</h3>
+<p><strong>Статус:</strong> {{ object.get_status_display }}</p>
+<p><strong>Пріоритет:</strong> {{ object.get_priority_display }}</p>
+<p><strong>Дедлайн:</strong> {{ object.deadline|date:"d.m.Y" }}</p>
+<p><strong>Опис:</strong> {{ object.description }}</p>
+
+<hr>
+<h5>Коментарі</h5>
+<ul class="list-group mb-3">
+  {% for comment in object.comments.all %}
+    <li class="list-group-item">
+      <strong>{{ comment.author.username }}</strong> ({{ comment.created_at|date:"d.m.Y H:i" }}):<br>
+      {{ comment.text }}
+    </li>
+  {% empty %}
+    <li class="list-group-item text-muted">Немає коментарів</li>
+  {% endfor %}
+</ul>
+
+<form method="post">
+  {% csrf_token %}
+  {{ comment_form.as_p }}
+  <button class="btn btn-success btn-sm">Додати коментар</button>
+</form>
+
+<a href="{% url 'task_edit' object.pk %}" class="btn btn-outline-primary btn-sm mt-3">✏️ Редагувати</a>
+<a href="{% url 'task_list' %}" class="btn btn-secondary btn-sm mt-3">⬅ Назад</a>
+{% endblock %}
